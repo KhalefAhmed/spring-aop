@@ -8,15 +8,17 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Component;
 
+import java.util.logging.Logger;
+
 @Component
 @Aspect
 @EnableAspectJAutoProxy
 public class AuthorizationAspect {
 
-    @Around(value = "@annotation(me.akhalef.aspect.SecuredByAspect)",
-            argNames = "joinPoint,securedByAspect")
+    Logger logger = Logger.getLogger(AuthorizationAspect.class.getName());
+    @Around("@annotation(securedByAspect) && execution(* *(..))")
     public Object authorize(ProceedingJoinPoint joinPoint, SecuredByAspect securedByAspect) throws Throwable {
-
+        logger.info("AuthorizationAspect.authorize()");
         String[] roles = securedByAspect.roles();
         boolean authorized = false;
         for (String role : roles) {
@@ -32,5 +34,4 @@ public class AuthorizationAspect {
 
         throw new SecurityException("User " + SecurityContext.username + " is not authorized to access this method");
     }
-
 }
