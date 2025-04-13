@@ -1,6 +1,7 @@
 package me.akhalef;
 
 import me.akhalef.service.IMetier;
+import me.akhalef.service.SecurityContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
@@ -9,6 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 public class App {
     public static void main(String[] args) {
         ApplicationContext applicationContext = new AnnotationConfigApplicationContext(App.class);
+        SecurityContext.authenticate("root", "root", new String[]{"admin", "user"});
 
         IMetier metier = applicationContext.getBean(IMetier.class);
         System.out.println("***************");

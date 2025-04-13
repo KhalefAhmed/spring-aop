@@ -1,6 +1,6 @@
 package me.akhalef.service;
 
 public interface IMetier {
-    public void process();
-    public double compute();
+    void process();
+    double compute();
 }
